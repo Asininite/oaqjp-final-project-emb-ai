@@ -1,9 +1,11 @@
 import requests
+import json
+
 def emotion_detector(text_to_analyze):
     url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
     
     myobj = {
-        "raw_document" : {
+        "raw_document": {
             "text": text_to_analyze
         }
     }
@@ -15,6 +17,18 @@ def emotion_detector(text_to_analyze):
     response = requests.post(url, json=myobj, headers=header)
     formatted_response = json.loads(response.text)
 
-    label = formatted_response['documentEmotion']['label']
-    score = formatted_response['documentEmotion']['score']
-    return {'label': label, 'score': score}
+    emotion_data = formatted_response['emotionPredictions'][0]
+    emotions = emotion_data['emotion']
+
+    dominant_emotion = max(emotions, key=emotions.get)
+
+    result = {
+        'anger': emotions.get('anger', 0),
+        'disgust': emotions.get('disgust', 0),
+        'fear': emotions.get('fear', 0),
+        'joy': emotions.get('joy', 0),
+        'sadness': emotions.get('sadness', 0),
+        'dominant_emotion': dominant_emotion
+    }
+
+    return result
