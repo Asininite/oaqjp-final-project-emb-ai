@@ -1,2 +1,2 @@
 # Repository for final project
-Asininite_Emotion_Detector
+Final project
