@@ -31,4 +31,4 @@ def emotion_detector(text_to_analyze):
         'dominant_emotion': dominant_emotion
     }
 
-    return result
+    return response.text
